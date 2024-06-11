@@ -11,7 +11,7 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '\\', ':Neotree reveal<CR>', { desc = 'NeoTree reveal' } },
+    { '\\', ':Neotree float reveal_force_cwd<CR>', { desc = 'NeoTree reveal' } },
   },
   opts = {
     filesystem = {
