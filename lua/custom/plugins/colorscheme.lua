@@ -1,11 +1,11 @@
 return {
-  'projekt0n/github-nvim-theme',
-  name = 'github-theme',
-  lazy = false,
-  priority = 1000,
+  'Skardyy/makurai-nvim',
   config = function()
-    require('github-theme').setup {}
+    -- you don't have to call setup
+    require('makurai').setup {
+      transparent = false, -- removes the bg color
+    }
 
-    vim.cmd 'colorscheme github_light'
+    vim.cmd.colorscheme 'makurai_mage'
   end,
 }
