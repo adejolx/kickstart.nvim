@@ -3,9 +3,11 @@ return {
   config = function()
     -- you don't have to call setup
     require('makurai').setup {
-      transparent = false, -- removes the bg color
+      increase_contrast = true,
+      bordered = true,
+      transparent = false,
     }
 
-    vim.cmd.colorscheme 'makurai_mage'
+    vim.cmd.colorscheme 'makurai_dark'
   end,
 }
