@@ -655,6 +655,37 @@ require('lazy').setup({
             Lua = {},
           },
         },
+        tailwindcss = {
+          -- Add any custom options here
+          filetypes = {
+            'html',
+            'css',
+            'scss',
+            'javascript',
+            'javascriptreact',
+            'typescript',
+            'typescriptreact',
+            'tsx',
+            'jsx',
+            'vue',
+            'svelte',
+            'astro',
+          },
+
+          -- Optional but very useful for Tailwind
+          settings = {
+            tailwindCSS = {
+              experimental = {
+                classRegex = {
+                  -- Common patterns for cn(), clsx, className=, etc.
+                  { 'className\\s*[:=]\\s*["\'`]([^"\'`]*)', 1 },
+                  { 'cn\\s*\\(\\s*["\'`]([^"\'`]*)', 1 },
+                  { 'clsx\\s*\\(\\s*["\'`]([^"\'`]*)', 1 },
+                },
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -667,8 +698,9 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'prettierd',
-        'eslint_d',
+        'oxlint',
+        'oxfmt',
+        'tailwindcss-language-server',
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -716,13 +748,13 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { 'prettierd', 'prettier', stop_after_first = true },
-        typescript = { 'prettierd', 'prettier', stop_after_first = true },
-        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-        css = { 'prettierd', 'prettier', stop_after_first = true },
-        html = { 'prettierd', 'prettier', stop_after_first = true },
-        json = { 'prettierd', 'prettier', stop_after_first = true },
+        javascript = { 'oxfmt', stop_after_first = true },
+        typescript = { 'oxfmt', stop_after_first = true },
+        typescriptreact = { 'oxfmt', stop_after_first = true },
+        javascriptreact = { 'oxfmt', stop_after_first = true },
+        css = { 'oxfmt', stop_after_first = true },
+        html = { 'oxfmt', stop_after_first = true },
+        json = { 'oxfmt', stop_after_first = true },
       },
     },
   },
