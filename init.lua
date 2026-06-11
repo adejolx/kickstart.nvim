@@ -339,370 +339,383 @@ require('lazy').setup({
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
 
   { -- Fuzzy Finder (files, lsp, etc)
-  'nvim-telescope/telescope.nvim',
-  enabled = true,
-  event = 'VimEnter',
-  dependencies = {
-    'nvim-lua/plenary.nvim',
+    'nvim-telescope/telescope.nvim',
+    enabled = true,
+    event = 'VimEnter',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
 
-    {
-      'nvim-telescope/telescope-fzf-native.nvim',
-      build = 'make',
-      cond = function()
-        return vim.fn.executable 'make' == 1
-      end,
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        cond = function() return vim.fn.executable 'make' == 1 end,
+      },
+
+      { 'nvim-telescope/telescope-ui-select.nvim' },
+
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
 
-    { 'nvim-telescope/telescope-ui-select.nvim' },
+    config = function()
+      local telescope = require 'telescope'
+      local builtin = require 'telescope.builtin'
+      local actions = require 'telescope.actions'
+      local themes = require 'telescope.themes'
 
-    { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-  },
+      telescope.setup {
+        defaults = {
+          prompt_prefix = '   ',
+          selection_caret = ' ',
+          entry_prefix = '  ',
 
-  config = function()
-    local telescope = require 'telescope'
-    local builtin = require 'telescope.builtin'
-    local actions = require 'telescope.actions'
-    local themes = require 'telescope.themes'
+          sorting_strategy = 'ascending',
+          layout_strategy = 'flex',
 
-    telescope.setup {
-      defaults = {
-        prompt_prefix = '   ',
-        selection_caret = ' ',
-        entry_prefix = '  ',
-
-        sorting_strategy = 'ascending',
-        layout_strategy = 'flex',
-
-        layout_config = {
-          width = 0.95,
-          height = 0.9,
-          prompt_position = 'top',
-
-          horizontal = {
-            preview_width = 0.55,
-          },
-
-          vertical = {
-            preview_height = 0.55,
-          },
-
-          flex = {
-            flip_columns = 140,
-          },
-        },
-
-        preview = {
-          treesitter = true,
-        },
-
-        path_display = {
-          'smart',
-        },
-
-        file_ignore_patterns = {
-          'node_modules/',
-          '.git/',
-          'dist/',
-          'build/',
-          '.next/',
-          'coverage/',
-          '.expo/',
-          'ios/Pods/',
-          '%.lock',
-        },
-
-        vimgrep_arguments = {
-          'rg',
-          '--color=never',
-          '--no-heading',
-          '--with-filename',
-          '--line-number',
-          '--column',
-          '--smart-case',
-          '--hidden',
-          '--glob=!**/.git/*',
-          '--glob=!**/node_modules/*',
-          '--glob=!**/dist/*',
-          '--glob=!**/build/*',
-          '--glob=!**/.next/*',
-          '--glob=!**/coverage/*',
-        },
-
-        mappings = {
-          i = {
-            ['<esc>'] = actions.close,
-            ['<c-j>'] = actions.move_selection_next,
-            ['<c-k>'] = actions.move_selection_previous,
-            ['<c-d>'] = actions.preview_scrolling_down,
-            ['<c-u>'] = actions.preview_scrolling_up,
-            ['<c-q>'] = actions.send_to_qflist + actions.open_qflist,
-            ['<c-enter>'] = 'to_fuzzy_refine',
-          },
-
-          n = {
-            ['q'] = actions.close,
-            ['j'] = actions.move_selection_next,
-            ['k'] = actions.move_selection_previous,
-            ['<c-d>'] = actions.preview_scrolling_down,
-            ['<c-u>'] = actions.preview_scrolling_up,
-            ['<c-q>'] = actions.send_to_qflist + actions.open_qflist,
-          },
-        },
-      },
-
-      pickers = {
-        find_files = {
-          hidden = true,
-          previewer = false,
           layout_config = {
-            width = 0.8,
-            height = 0.75,
-          },
-        },
+            width = 0.95,
+            height = 0.9,
+            prompt_position = 'top',
 
-        buffers = {
-          previewer = false,
-          sort_mru = true,
-          ignore_current_buffer = true,
-          layout_config = {
-            width = 0.75,
-            height = 0.7,
+            horizontal = {
+              preview_width = 0.55,
+            },
+
+            vertical = {
+              preview_height = 0.55,
+            },
+
+            flex = {
+              flip_columns = 140,
+            },
           },
+
+          preview = {
+            treesitter = true,
+          },
+
+          path_display = {
+            'smart',
+          },
+
+          file_ignore_patterns = {
+            'node_modules/',
+            '.git/',
+            'dist/',
+            'build/',
+            '.next/',
+            'coverage/',
+            '.expo/',
+            'ios/Pods/',
+            '%.lock',
+          },
+
+          vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--hidden',
+            '--glob=!**/.git/*',
+            '--glob=!**/node_modules/*',
+            '--glob=!**/dist/*',
+            '--glob=!**/build/*',
+            '--glob=!**/.next/*',
+            '--glob=!**/coverage/*',
+          },
+
           mappings = {
             i = {
-              ['<c-d>'] = actions.delete_buffer,
+              ['<esc>'] = actions.close,
+              ['<c-j>'] = actions.move_selection_next,
+              ['<c-k>'] = actions.move_selection_previous,
+              ['<c-d>'] = actions.preview_scrolling_down,
+              ['<c-u>'] = actions.preview_scrolling_up,
+              ['<c-q>'] = actions.send_to_qflist + actions.open_qflist,
+              ['<c-enter>'] = 'to_fuzzy_refine',
             },
+
             n = {
-              ['dd'] = actions.delete_buffer,
+              ['q'] = actions.close,
+              ['j'] = actions.move_selection_next,
+              ['k'] = actions.move_selection_previous,
+              ['<c-d>'] = actions.preview_scrolling_down,
+              ['<c-u>'] = actions.preview_scrolling_up,
+              ['<c-q>'] = actions.send_to_qflist + actions.open_qflist,
             },
           },
         },
 
-        oldfiles = {
-          previewer = false,
-          layout_config = {
-            width = 0.8,
-            height = 0.75,
+        pickers = {
+          find_files = {
+            hidden = true,
+            previewer = false,
+            layout_config = {
+              width = 0.8,
+              height = 0.75,
+            },
+          },
+
+          buffers = {
+            previewer = false,
+            sort_mru = true,
+            ignore_current_buffer = true,
+            layout_config = {
+              width = 0.75,
+              height = 0.7,
+            },
+            mappings = {
+              i = {
+                ['<c-d>'] = actions.delete_buffer,
+              },
+              n = {
+                ['dd'] = actions.delete_buffer,
+              },
+            },
+          },
+
+          oldfiles = {
+            previewer = false,
+            layout_config = {
+              width = 0.8,
+              height = 0.75,
+            },
+          },
+
+          live_grep = {
+            layout_strategy = 'horizontal',
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_width = 0.55,
+            },
+          },
+
+          grep_string = {
+            layout_strategy = 'horizontal',
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_width = 0.55,
+            },
+          },
+
+          diagnostics = {
+            layout_strategy = 'horizontal',
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_width = 0.55,
+            },
+          },
+
+          lsp_references = {
+            layout_strategy = 'horizontal',
+            include_declaration = false,
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_width = 0.55,
+            },
+          },
+
+          lsp_definitions = {
+            layout_strategy = 'horizontal',
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_width = 0.55,
+            },
+          },
+
+          lsp_implementations = {
+            layout_strategy = 'horizontal',
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_width = 0.55,
+            },
+          },
+
+          lsp_type_definitions = {
+            layout_strategy = 'horizontal',
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_width = 0.55,
+            },
+          },
+
+          lsp_document_symbols = {
+            layout_strategy = 'vertical',
+            layout_config = {
+              width = 0.8,
+              height = 0.85,
+              preview_height = 0.45,
+            },
+          },
+
+          lsp_dynamic_workspace_symbols = {
+            layout_strategy = 'horizontal',
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_width = 0.5,
+            },
           },
         },
 
-        live_grep = {
-          layout_strategy = 'horizontal',
-          layout_config = {
-            width = 0.95,
-            height = 0.9,
-            preview_width = 0.55,
+        extensions = {
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = 'smart_case',
+          },
+
+          ['ui-select'] = themes.get_dropdown {
+            previewer = false,
+            layout_config = {
+              width = 0.6,
+              height = 0.5,
+            },
           },
         },
+      }
 
-        grep_string = {
-          layout_strategy = 'horizontal',
-          layout_config = {
-            width = 0.95,
-            height = 0.9,
-            preview_width = 0.55,
-          },
-        },
+      pcall(telescope.load_extension, 'fzf')
+      pcall(telescope.load_extension, 'ui-select')
 
-        diagnostics = {
-          layout_strategy = 'horizontal',
-          layout_config = {
-            width = 0.95,
-            height = 0.9,
-            preview_width = 0.55,
-          },
-        },
-
-        lsp_references = {
-          layout_strategy = 'horizontal',
-          include_declaration = false,
-          layout_config = {
-            width = 0.95,
-            height = 0.9,
-            preview_width = 0.55,
-          },
-        },
-
-        lsp_definitions = {
-          layout_strategy = 'horizontal',
-          layout_config = {
-            width = 0.95,
-            height = 0.9,
-            preview_width = 0.55,
-          },
-        },
-
-        lsp_implementations = {
-          layout_strategy = 'horizontal',
-          layout_config = {
-            width = 0.95,
-            height = 0.9,
-            preview_width = 0.55,
-          },
-        },
-
-        lsp_type_definitions = {
-          layout_strategy = 'horizontal',
-          layout_config = {
-            width = 0.95,
-            height = 0.9,
-            preview_width = 0.55,
-          },
-        },
-
-        lsp_document_symbols = {
-          layout_strategy = 'vertical',
-          layout_config = {
-            width = 0.8,
-            height = 0.85,
-            preview_height = 0.45,
-          },
-        },
-
-        lsp_dynamic_workspace_symbols = {
-          layout_strategy = 'horizontal',
-          layout_config = {
-            width = 0.95,
-            height = 0.9,
-            preview_width = 0.5,
-          },
-        },
-      },
-
-      extensions = {
-        fzf = {
-          fuzzy = true,
-          override_generic_sorter = true,
-          override_file_sorter = true,
-          case_mode = 'smart_case',
-        },
-
-        ['ui-select'] = themes.get_dropdown {
-          previewer = false,
-          layout_config = {
-            width = 0.6,
-            height = 0.5,
-          },
-        },
-      },
-    }
-
-    pcall(telescope.load_extension, 'fzf')
-    pcall(telescope.load_extension, 'ui-select')
-
-    vim.keymap.set('n', '<leader>sh', builtin.help_tags, {
-      desc = '[S]earch [H]elp',
-    })
-
-    vim.keymap.set('n', '<leader>sk', builtin.keymaps, {
-      desc = '[S]earch [K]eymaps',
-    })
-
-    vim.keymap.set('n', '<leader>ss', builtin.builtin, {
-      desc = '[S]earch [S]elect Telescope',
-    })
-
-    vim.keymap.set('n', '<leader>sc', builtin.commands, {
-      desc = '[S]earch [C]ommands',
-    })
-
-    vim.keymap.set('n', '<leader>sf', builtin.find_files, {
-      desc = '[S]earch [F]iles',
-    })
-
-    vim.keymap.set('n', '<leader>sg', builtin.live_grep, {
-      desc = '[S]earch by [G]rep',
-    })
-
-    vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, {
-      desc = '[S]earch current [W]ord',
-    })
-
-    vim.keymap.set('n', '<leader>sd', builtin.diagnostics, {
-      desc = '[S]earch [D]iagnostics',
-    })
-
-    vim.keymap.set('n', '<leader>sr', builtin.resume, {
-      desc = '[S]earch [R]esume',
-    })
-
-    vim.keymap.set('n', '<leader>s.', builtin.oldfiles, {
-      desc = '[S]earch Recent Files',
-    })
-
-    vim.keymap.set('n', '<leader><leader>', builtin.buffers, {
-      desc = 'Find existing buffers',
-    })
-
-    vim.keymap.set('n', '<leader>/', function()
-      builtin.current_buffer_fuzzy_find(themes.get_dropdown {
-        previewer = false,
-        winblend = 0,
-        layout_config = {
-          width = 0.8,
-          height = 0.6,
-        },
+      vim.keymap.set('n', '<leader>sh', builtin.help_tags, {
+        desc = '[S]earch [H]elp',
       })
-    end, {
-      desc = 'Fuzzily search current buffer',
-    })
 
-    vim.keymap.set('n', '<leader>s/', function()
-      builtin.live_grep {
-        grep_open_files = true,
-        prompt_title = 'Live Grep in Open Files',
-      }
-    end, {
-      desc = '[S]earch [/] in Open Files',
-    })
+      vim.keymap.set('n', '<leader>sk', builtin.keymaps, {
+        desc = '[S]earch [K]eymaps',
+      })
 
-    vim.keymap.set('n', '<leader>sn', function()
-      builtin.find_files {
-        cwd = vim.fn.stdpath 'config',
-        prompt_title = 'Neovim Config Files',
-      }
-    end, {
-      desc = '[S]earch [N]eovim files',
-    })
+      vim.keymap.set('n', '<leader>ss', builtin.builtin, {
+        desc = '[S]earch [S]elect Telescope',
+      })
 
-    vim.api.nvim_create_autocmd('LspAttach', {
-      group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
-      callback = function(event)
-        local buf = event.buf
+      vim.keymap.set('n', '<leader>sc', builtin.commands, {
+        desc = '[S]earch [C]ommands',
+      })
 
-        vim.keymap.set('n', 'grr', builtin.lsp_references, {
-          buffer = buf,
-          desc = '[G]oto [R]eferences',
-        })
+      vim.keymap.set('n', '<leader>sf', builtin.find_files, {
+        desc = '[S]earch [F]iles',
+      })
 
-        vim.keymap.set('n', 'gri', builtin.lsp_implementations, {
-          buffer = buf,
-          desc = '[G]oto [I]mplementation',
-        })
+      vim.keymap.set('n', '<leader>sg', builtin.live_grep, {
+        desc = '[S]earch by [G]rep',
+      })
 
-        vim.keymap.set('n', 'grd', builtin.lsp_definitions, {
-          buffer = buf,
-          desc = '[G]oto [D]efinition',
-        })
+      vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, {
+        desc = '[S]earch current [W]ord',
+      })
 
-        vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, {
-          buffer = buf,
-          desc = '[G]oto [T]ype Definition',
-        })
+      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, {
+        desc = '[S]earch [D]iagnostics',
+      })
 
-        vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, {
-          buffer = buf,
-          desc = 'Open Document Symbols',
-        })
+      vim.keymap.set('n', '<leader>sr', builtin.resume, {
+        desc = '[S]earch [R]esume',
+      })
 
-        vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, {
-          buffer = buf,
-          desc = 'Open Workspace Symbols',
-        })
-      end,
-    })
-  end,
-},
+      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, {
+        desc = '[S]earch Recent Files',
+      })
+
+      vim.keymap.set('n', '<leader><leader>', builtin.buffers, {
+        desc = 'Find existing buffers',
+      })
+
+      vim.keymap.set(
+        'n',
+        '<leader>/',
+        function()
+          builtin.current_buffer_fuzzy_find(themes.get_dropdown {
+            previewer = false,
+            winblend = 0,
+            layout_config = {
+              width = 0.8,
+              height = 0.6,
+            },
+          })
+        end,
+        {
+          desc = 'Fuzzily search current buffer',
+        }
+      )
+
+      vim.keymap.set(
+        'n',
+        '<leader>s/',
+        function()
+          builtin.live_grep {
+            grep_open_files = true,
+            prompt_title = 'Live Grep in Open Files',
+          }
+        end,
+        {
+          desc = '[S]earch [/] in Open Files',
+        }
+      )
+
+      vim.keymap.set(
+        'n',
+        '<leader>sn',
+        function()
+          builtin.find_files {
+            cwd = vim.fn.stdpath 'config',
+            prompt_title = 'Neovim Config Files',
+          }
+        end,
+        {
+          desc = '[S]earch [N]eovim files',
+        }
+      )
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
+        callback = function(event)
+          local buf = event.buf
+
+          vim.keymap.set('n', 'grr', builtin.lsp_references, {
+            buffer = buf,
+            desc = '[G]oto [R]eferences',
+          })
+
+          vim.keymap.set('n', 'gri', builtin.lsp_implementations, {
+            buffer = buf,
+            desc = '[G]oto [I]mplementation',
+          })
+
+          vim.keymap.set('n', 'grd', builtin.lsp_definitions, {
+            buffer = buf,
+            desc = '[G]oto [D]efinition',
+          })
+
+          vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, {
+            buffer = buf,
+            desc = '[G]oto [T]ype Definition',
+          })
+
+          vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, {
+            buffer = buf,
+            desc = 'Open Document Symbols',
+          })
+
+          vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, {
+            buffer = buf,
+            desc = 'Open Workspace Symbols',
+          })
+        end,
+      })
+    end,
+  },
 
   -- LSP Plugins
   {
@@ -777,6 +790,9 @@ require('lazy').setup({
           -- or a suggestion from your LSP for this to activate.
           map('<leader>ca', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
+          map('K', vim.lsp.buf.hover, '[H]over Documentation')
+
+          map('<leader>k', vim.lsp.buf.hover, '[H]over Documentation')
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -834,7 +850,24 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        ts_ls = {},
+        ts_ls = {
+          settings = {
+            typescript = {
+              preferences = {
+                includePackageJsonAutoImports = 'on',
+                includeCompletionsForModuleExports = true,
+                includeCompletionsForImportStatements = true,
+              },
+            },
+            javascript = {
+              preferences = {
+                includePackageJsonAutoImports = 'on',
+                includeCompletionsForModuleExports = true,
+                includeCompletionsForImportStatements = true,
+              },
+            },
+          },
+        },
 
         stylua = {}, -- Used to format Lua code
 
@@ -876,8 +909,6 @@ require('lazy').setup({
             'javascriptreact',
             'typescript',
             'typescriptreact',
-            'tsx',
-            'jsx',
             'vue',
             'svelte',
             'astro',
@@ -886,14 +917,23 @@ require('lazy').setup({
           -- Optional but very useful for Tailwind
           settings = {
             tailwindCSS = {
-              experimental = {
-                classRegex = {
-                  -- Common patterns for cn(), clsx, className=, etc.
-                  { 'className\\s*[:=]\\s*["\'`]([^"\'`]*)', 1 },
-                  { 'cn\\s*\\(\\s*["\'`]([^"\'`]*)', 1 },
-                  { 'clsx\\s*\\(\\s*["\'`]([^"\'`]*)', 1 },
-                },
+              classAttributes = {
+                'class',
+                'className',
+                'class:list',
+                'classList',
+                'ngClass',
               },
+
+              classFunctions = {
+                'cn',
+                'clsx',
+                'cva',
+              },
+
+              hovers = true,
+              suggestions = true,
+              validate = true,
             },
           },
         },
@@ -1012,62 +1052,71 @@ require('lazy').setup({
     ---@type blink.cmp.Config
     opts = {
       keymap = {
-        -- 'default' (recommended) for mappings similar to built-in completions
-        --   <c-y> to accept ([y]es) the completion.
-        --    This will auto-import if your LSP supports it.
-        --    This will expand snippets if the LSP sent a snippet.
-        -- 'super-tab' for tab to accept
-        -- 'enter' for enter to accept
-        -- 'none' for no mappings
-        --
-        -- For an understanding of why the 'default' preset is recommended,
-        -- you will need to read `:help ins-completion`
-        --
-        -- No, but seriously. Please read `:help ins-completion`, it is really good!
-        --
-        -- All presets have the following mappings:
-        -- <tab>/<s-tab>: move to right/left of your snippet expansion
-        -- <c-space>: Open menu or open docs if already open
-        -- <c-n>/<c-p> or <up>/<down>: Select next/previous item
-        -- <c-e>: Hide menu
-        -- <c-k>: Toggle signature help
-        --
-        -- See :h blink-cmp-config-keymap for defining your own keymap
         preset = 'enter',
 
-        -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
-        --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
+        -- Manually trigger completion/docs.
+        -- <C-Space> can arrive as <C-@> in some terminals, so map both.
+        ['<C-Space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+        ['<C-@>'] = { 'show', 'show_documentation', 'hide_documentation' },
+
+        -- Accept selected completion without needing Enter.
+        ['<C-y>'] = { 'select_and_accept', 'fallback' },
+
+        -- Signature help, useful inside function calls.
+        ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
+
+        -- Scroll docs/signature window.
+        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
       },
 
       appearance = {
-        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- Adjusts spacing to ensure icons are aligned
         nerd_font_variant = 'mono',
       },
 
       completion = {
-        -- By default, you may press `<c-space>` to show the documentation.
-        -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        list = {
+          selection = {
+            preselect = true,
+            auto_insert = true,
+          },
+        },
+
+        menu = {
+          draw = {
+            columns = {
+              { 'kind_icon' },
+              { 'label', 'label_description', gap = 1 },
+              { 'kind' },
+            },
+          },
+        },
+
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 300,
+        },
+
+        ghost_text = {
+          enabled = true,
+        },
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets' },
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
 
-      snippets = { preset = 'luasnip' },
+      snippets = {
+        preset = 'luasnip',
+      },
 
-      -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
-      -- which automatically downloads a prebuilt binary when enabled.
-      --
-      -- By default, we use the Lua implementation instead, but you may enable
-      -- the rust implementation via `'prefer_rust_with_warning'`
-      --
-      -- See :h blink-cmp-config-fuzzy for more information
-      fuzzy = { implementation = 'lua' },
+      fuzzy = {
+        implementation = 'lua',
+      },
 
-      -- Shows a signature help window while you type arguments for a function
-      signature = { enabled = true },
+      signature = {
+        enabled = true,
+      },
     },
   },
 
