@@ -1,10 +1,9 @@
 return {
-  'projekt0n/github-nvim-theme',
-  name = 'github-theme',
-  lazy = false,
+  'adejolx-kora/lowbeam.nvim',
   priority = 1000,
   config = function()
-    require('github-theme').setup {}
-    vim.cmd.colorscheme 'github_light'
+    require('lowbeam').setup {}
+
+    vim.cmd.colorscheme 'lowbeam-day'
   end,
 }
