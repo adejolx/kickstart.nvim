@@ -5,17 +5,30 @@ return {
     'JoosepAlviste/nvim-ts-context-commentstring',
   },
   config = function()
-    -- 1. Configure the context-commentstring plugin FIRST
     require('ts_context_commentstring').setup {
-      enable_autocmd = false, -- This is the magic line that kills the error
+      enable_autocmd = false,
     }
 
-    local comment = require 'Comment'
-    local ts_context_commentstring = require 'ts_context_commentstring.integrations.comment_nvim'
+    local ts_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
 
-    -- 2. Enable comment with the pre_hook
-    comment.setup {
-      pre_hook = ts_context_commentstring.create_pre_hook(),
+    ---@diagnostic disable-next-line: missing-fields
+    require('Comment').setup {
+      pre_hook = function(ctx)
+        local ft = vim.bo.filetype
+
+        local use_ts_context = {
+          javascriptreact = true,
+          typescriptreact = true,
+          vue = true,
+          svelte = true,
+          html = true,
+          astro = true,
+        }
+
+        if use_ts_context[ft] then return ts_hook(ctx) or vim.bo.commentstring end
+
+        return vim.bo.commentstring
+      end,
     }
   end,
 }
