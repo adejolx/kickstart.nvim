@@ -7,4 +7,4 @@ opt.hlsearch = false
 opt.backspace = 'indent,eol,start'
 opt.autoindent = true
 opt.cursorline = true
-opt.scrolloff = 999
+opt.scrolloff = 12

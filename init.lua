@@ -280,22 +280,6 @@ require('lazy').setup({
   -- options to `gitsigns.nvim`.
   --
   -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    ---@module 'gitsigns'
-    ---@type Gitsigns.Config
-    ---@diagnostic disable-next-line: missing-fields
-    opts = {
-      signs = {
-        add = { text = '+' }, ---@diagnostic disable-line: missing-fields
-        change = { text = '~' }, ---@diagnostic disable-line: missing-fields
-        delete = { text = '_' }, ---@diagnostic disable-line: missing-fields
-        topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
-        changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
-      },
-    },
-  },
-
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -399,12 +383,12 @@ require('lazy').setup({
 
           file_ignore_patterns = {
             'node_modules/',
-            '.git/',
+            '%.git/',
             'dist/',
             'build/',
-            '.next/',
+            '%.next/',
             'coverage/',
-            '.expo/',
+            '%.expo/',
             'ios/Pods/',
             '%.lock',
           },
@@ -693,7 +677,17 @@ require('lazy').setup({
             desc = '[G]oto [I]mplementation',
           })
 
-          vim.keymap.set('n', 'grd', builtin.lsp_definitions, {
+          -- vim.keymap.set('n', 'grd', builtin.lsp_definitions, {
+          --   buffer = buf,
+          --   desc = '[G]oto [D]efinition',
+          -- })
+
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {
+            buffer = buf,
+            desc = '[G]oto [D]efinition',
+          })
+
+          vim.keymap.set('n', 'grd', vim.lsp.buf.definition, {
             buffer = buf,
             desc = '[G]oto [D]efinition',
           })
@@ -869,8 +863,6 @@ require('lazy').setup({
           },
         },
 
-        stylua = {}, -- Used to format Lua code
-
         -- Special Lua Config, as recommended by neovim help docs
         lua_ls = {
           on_init = function(client)
@@ -1007,13 +999,13 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { 'oxfmt', stop_after_first = true },
-        typescript = { 'oxfmt', stop_after_first = true },
-        typescriptreact = { 'oxfmt', stop_after_first = true },
-        javascriptreact = { 'oxfmt', stop_after_first = true },
-        css = { 'oxfmt', stop_after_first = true },
-        html = { 'oxfmt', stop_after_first = true },
-        json = { 'oxfmt', stop_after_first = true },
+        javascript = { 'prettierd', 'oxfmt', stop_after_first = true },
+        typescript = { 'prettierd', 'oxfmt', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'oxfmt', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'oxfmt', stop_after_first = true },
+        css = { 'prettierd', 'oxfmt', stop_after_first = true },
+        html = { 'prettierd', 'oxfmt', stop_after_first = true },
+        json = { 'prettierd', 'oxfmt', stop_after_first = true },
       },
     },
   },
@@ -1098,7 +1090,7 @@ require('lazy').setup({
         },
 
         ghost_text = {
-          enabled = true,
+          enabled = false,
         },
       },
 
@@ -1171,7 +1163,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     lazy = false,
     build = ':TSUpdate',
-    branch = 'main',
+    branch = 'master',
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
     config = function()
       local parsers = {

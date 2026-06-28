@@ -31,7 +31,7 @@ keymap.set(
 
 keymap.set(
   'n',
-  '<leader>q',
+  '<leader>Q',
   '<cmd>q<cr>',
   vim.tbl_extend('force', opts, {
     desc = 'Quit window',

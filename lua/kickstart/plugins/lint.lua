@@ -13,7 +13,6 @@ return {
       typescript = { 'oxlint' },
       javascriptreact = { 'oxlint' },
       typescriptreact = { 'oxlint' },
-      json = { 'oxlint' },
     }
 
     -- To allow other plugins to add linters to require('lint').linters_by_ft,
