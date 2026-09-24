@@ -453,6 +453,9 @@ do
     MiniIcons.mock_nvim_web_devicons()
   end
 
+  -- Show listed buffers in the tabline.
+  require('mini.tabline').setup()
+
   -- Better Around/Inside textobjects
   --
   -- Examples:
@@ -603,7 +606,9 @@ do
   vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
   vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
   vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
-  vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+  vim.keymap.set('n', '<leader><leader>', function()
+    builtin.buffers { sort_mru = true }
+  end, { desc = '[ ] Find existing buffers' })
 
   -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
   -- If you later switch picker plugins, this is where to update these mappings.

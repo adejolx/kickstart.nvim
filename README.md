@@ -52,6 +52,8 @@ Open a project with `nvim .`. The leader key is `<Space>`.
 
 `mini.jump2d` shows labels over likely jump locations. Press `<Space>j`, then type the label or labels shown at the destination. It works in Normal, Visual, and Operator-pending modes.
 
+The open-buffer picker on `<Space><Space>` lists buffers by most recently used, so the buffers you opened or visited most recently appear first.
+
 ### Edit and inspect
 
 | Keys | Action |
