@@ -76,6 +76,19 @@ local function open_in_os()
   if path then vim.ui.open(path) end
 end
 
+local function map_split(buf, lhs, direction)
+  vim.keymap.set('n', lhs, function()
+    local target_window = MiniFiles.get_explorer_state().target_window
+    local new_target = vim.api.nvim_win_call(target_window, function()
+      vim.cmd(direction .. ' split')
+      return vim.api.nvim_get_current_win()
+    end)
+
+    MiniFiles.set_target_window(new_target)
+    MiniFiles.go_in { close_on_file = true }
+  end, { buffer = buf, desc = 'Open in ' .. direction .. ' split' })
+end
+
 MiniFiles.setup {
   content = {
     filter = git_filter,
@@ -108,10 +121,10 @@ vim.api.nvim_create_autocmd('User', {
   callback = function() ignored_by_directory = {} end,
 })
 
--- QoL 2: keep the regular toggle and add a current-file reveal mapping.
+-- Open at the current file by default; use `\` for a plain toggle.
 vim.keymap.set('n', '\\', function() toggle_files() end, { desc = 'Toggle file explorer', silent = true })
-vim.keymap.set('n', '<leader>e', function() toggle_files() end, { desc = 'Toggle file explorer' })
-vim.keymap.set('n', '<leader>E', function() toggle_files(vim.api.nvim_buf_get_name(0), false) end, { desc = 'Reveal current file' })
+vim.keymap.set('n', '<leader>e', function() toggle_files(vim.api.nvim_buf_get_name(0), false) end, { desc = 'Reveal current file' })
+vim.keymap.set('n', '<leader>E', function() toggle_files() end, { desc = 'Toggle file explorer' })
 
 vim.api.nvim_create_autocmd('User', {
   pattern = 'MiniFilesBufferCreate',
@@ -122,6 +135,8 @@ vim.api.nvim_create_autocmd('User', {
     -- Open a file or folder with the consumer's default OS application.
     vim.keymap.set('n', 'gX', open_in_os, { buffer = buf, desc = 'Open with OS' })
     vim.keymap.set('n', '<CR>', function() MiniFiles.go_in { close_on_file = true } end, { buffer = buf, desc = 'Open and close explorer' })
+    map_split(buf, '<C-s>', 'belowright horizontal')
+    map_split(buf, '<C-v>', 'belowright vertical')
 
     -- Copy the selected entry to the active register in either path format.
     vim.keymap.set('n', 'gy', function() copy_path(false) end, { buffer = buf, desc = 'Yank absolute path' })
@@ -141,5 +156,15 @@ vim.api.nvim_create_autocmd('User', {
       vim.fn.chdir(path)
       vim.notify('Working directory: ' .. path)
     end, { buffer = buf, desc = 'Set working directory' })
+  end,
+})
+
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'MiniFilesWindowOpen',
+  desc = 'Show line numbers in mini.files',
+  callback = function(args)
+    local win = args.data.win_id
+    vim.wo[win].number = true
+    vim.wo[win].relativenumber = true
   end,
 })
