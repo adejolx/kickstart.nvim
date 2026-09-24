@@ -212,7 +212,7 @@ do
   }
 
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-  vim.keymap.set('n', '<leader>e', function()
+  vim.keymap.set('n', '<leader>d', function()
     vim.diagnostic.open_float { scope = 'line' }
   end, { desc = 'Show line diagnostics' })
 
@@ -455,6 +455,20 @@ do
     -- Used for backwards compatibility with plugins that require `nvim-web-devicons` (e.g. telescope.nvim)
     MiniIcons.mock_nvim_web_devicons()
   end
+
+  -- Show only buffers that are currently displayed in a window.
+  local function refresh_tabline_buffers()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_valid(buf) then vim.b[buf].minitabline_disable = #vim.fn.win_findbuf(buf) == 0 end
+    end
+  end
+
+  require('mini.tabline').setup()
+  vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufHidden', 'WinEnter', 'WinClosed' }, {
+    desc = 'Keep hidden buffers out of the tabline',
+    callback = function() vim.schedule(refresh_tabline_buffers) end,
+  })
+  refresh_tabline_buffers()
 
   -- Better Around/Inside textobjects
   --

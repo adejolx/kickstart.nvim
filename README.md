@@ -52,7 +52,9 @@ Open a project with `nvim .`. The leader key is `<Space>`.
 
 `mini.jump2d` shows labels over likely jump locations. Press `<Space>j`, then type the label or labels shown at the destination. It works in Normal, Visual, and Operator-pending modes.
 
-The open-buffer picker on `<Space><Space>` lists buffers by most recently used, so the buffers you opened or visited most recently appear first.
+The open-buffer picker on `<Space><Space>` lists currently displayed buffers by most recently used, so the buffers you visited most recently appear first.
+
+`mini.tabline` shows those currently displayed buffers across the top of the editor. Buffers hidden after closing their window or tab page are removed from the tabline automatically.
 
 ### Complete code with the LSP popup
 
@@ -63,7 +65,7 @@ When the completion popup is open, use `<C-n>` or `<Down>` to select the next su
 | Keys | Action |
 | --- | --- |
 | `<Space>f` | Format the current buffer |
-| `<Space>e` | Show diagnostics on the current line |
+| `<Space>d` | Show diagnostics on the current line |
 | `<Space>q` | Open the diagnostics list |
 | `<Esc><Esc>` | Leave terminal mode |
 
@@ -90,7 +92,7 @@ Optional examples live in [`lua/kickstart/plugins`](lua/kickstart/plugins). The 
 require 'kickstart.plugins.mini-files'
 ```
 
-Press `<Space>er` in Normal mode to reveal the current file, or `<Space>E`/`\` to toggle the explorer without revealing a file. Inside the explorer, `l` or `<CR>` opens a file and closes the explorer; `L` opens it while keeping the explorer open. `gX` opens the selected file or folder in the OS file explorer, `gy` copies its absolute path, `gY` copies its path relative to the current working directory, `gI` toggles Git-ignored entries, and `g~` changes Neovim’s working directory to the selected folder (or the parent of a selected file). Git-ignored entries are hidden by default, then dimmed when shown. Telescope’s file finder follows the same setting, and `q` closes a Telescope finder in Normal mode. Renames and moves notify supported LSP servers so they can update imports.
+Press `<Space>e` in Normal mode to reveal the current file, or `<Space>E`/`\` to toggle the explorer without revealing a file. Inside the explorer, `l` or `<CR>` opens a file and closes the explorer; `L` opens it while keeping the explorer open. `gX` opens the selected file or folder in the OS file explorer, `gy` copies its absolute path, `gY` copies its path relative to the current working directory, `gI` toggles Git-ignored entries, and `g~` changes Neovim’s working directory to the selected folder (or the parent of a selected file). Git-ignored entries are hidden by default, then dimmed when shown. Telescope’s file finder follows the same setting, and `q` closes a Telescope finder in Normal mode. Renames and moves notify supported LSP servers so they can update imports.
 
 Other available examples are `autopairs`, `debug`, `indent_line`, and `lint`. Each module contains its own setup and keymaps. For example, enabling `debug` adds `<F5>` to continue, `<F1>` to step into, `<F2>` to step over, `<F3>` to step out, and `<Space>b` to toggle a breakpoint.
 
