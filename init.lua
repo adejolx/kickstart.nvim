@@ -469,6 +469,10 @@ do
     n_lines = 500,
   }
 
+  -- Jump to visible locations with short, on-screen labels.
+  require('mini.jump2d').setup()
+  vim.keymap.set({ 'n', 'x', 'o' }, '<leader>j', MiniJump2d.start, { desc = 'Jump to a location' })
+
   -- Add/delete/replace surroundings (brackets, quotes, etc.)
   --
   -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
@@ -739,7 +743,50 @@ do
     -- clangd = {},
     -- gopls = {},
     -- pyright = {},
-    -- tsc = {},
+    tsc = {
+      settings = {
+        ['js/ts'] = {
+          inlayHints = {
+            parameterNames = {
+              enabled = 'literals',
+              suppressWhenArgumentMatchesName = true,
+            },
+            parameterTypes = { enabled = true },
+            variableTypes = { enabled = true },
+            propertyDeclarationTypes = { enabled = true },
+            functionLikeReturnTypes = { enabled = true },
+            enumMemberValues = { enabled = true },
+          },
+          referencesCodeLens = { enabled = true, showOnAllFunctions = true },
+          implementationsCodeLens = { enabled = true, showOnAllClassMethods = true },
+        },
+      },
+    },
+    cssls = {},
+    html = {},
+    tailwindcss = {
+      settings = {
+        tailwindCSS = {
+          classAttributes = {
+            'class',
+            'className',
+            'class:list',
+            'classList',
+            'ngClass',
+          },
+          experimental = {
+            classRegex = {
+              { 'cn\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
+              { 'clsx\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
+              { 'cva\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
+              { 'classNames?\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
+              { 'twMerge\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
+              { 'tv\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
+            },
+          },
+        },
+      },
+    },
     --
     -- Some languages (like rust) have entire language plugins that can be useful:
     --    https://github.com/mrcjkb/rustaceanvim
@@ -806,7 +853,10 @@ do
   -- You can press `g?` for help in this menu.
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
-    -- You can add other tools here that you want Mason to install
+    'oxfmt',
+    'oxlint',
+    'tailwindcss-language-server',
+    'tsc',
   })
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -843,7 +893,24 @@ do
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
-      -- rust = { 'rustfmt' },
+      lua = { 'stylua' },
+      javascript = { 'oxfmt' },
+      javascriptreact = { 'oxfmt' },
+      typescript = { 'oxfmt' },
+      typescriptreact = { 'oxfmt' },
+      json = { 'oxfmt' },
+      jsonc = { 'oxfmt' },
+      json5 = { 'oxfmt' },
+      yaml = { 'oxfmt' },
+      markdown = { 'oxfmt' },
+      mdx = { 'oxfmt' },
+      html = { 'oxfmt' },
+      css = { 'oxfmt' },
+      scss = { 'oxfmt' },
+      less = { 'oxfmt' },
+      graphql = { 'oxfmt' },
+      vue = { 'oxfmt' },
+      svelte = { 'oxfmt' },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
       --
@@ -1018,10 +1085,10 @@ do
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug'
-  -- require 'kickstart.plugins.indent_line'
-  -- require 'kickstart.plugins.lint'
-  -- require 'kickstart.plugins.autopairs'
-  -- require 'kickstart.plugins.neo-tree'
+  require 'kickstart.plugins.indent_line'
+  require 'kickstart.plugins.lint'
+  require 'kickstart.plugins.autopairs'
+  require 'kickstart.plugins.mini-files'
 
   -- NOTE: You can add your own plugins, configuration, etc. in `lua/custom/plugins/*.lua`.
   --
