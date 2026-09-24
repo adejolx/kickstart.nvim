@@ -456,9 +456,6 @@ do
     MiniIcons.mock_nvim_web_devicons()
   end
 
-  -- Show listed buffers in the tabline.
-  require('mini.tabline').setup()
-
   -- Better Around/Inside textobjects
   --
   -- Examples:
