@@ -892,6 +892,7 @@ do
   -- You can press `g?` for help in this menu.
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
+    'black',
     'markdownlint',
     'oxfmt',
     'oxlint',
@@ -919,8 +920,24 @@ do
     format_on_save = function(bufnr)
       -- You can specify filetypes to autoformat on save here:
       local enabled_filetypes = {
-        -- lua = true,
-        -- python = true,
+        javascript = true,
+        javascriptreact = true,
+        typescript = true,
+        typescriptreact = true,
+        lua = true,
+        python = true,
+        go = true,
+        json = true,
+        jsonc = true,
+        json5 = true,
+        yaml = true,
+        markdown = true,
+        mdx = true,
+        html = true,
+        css = true,
+        scss = true,
+        less = true,
+        graphql = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
         return { timeout_ms = 500 }
@@ -934,6 +951,8 @@ do
     -- You can also specify external formatters in here.
     formatters_by_ft = {
       lua = { 'stylua' },
+      python = { 'black' },
+      go = { 'gofmt' },
       javascript = { 'oxfmt' },
       javascriptreact = { 'oxfmt' },
       typescript = { 'oxfmt' },
