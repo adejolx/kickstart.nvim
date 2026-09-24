@@ -87,4 +87,20 @@ The first command reports missing dependencies. `:Mason` shows language servers 
 
 If plugins do not install, check that `git` is available and run `:checkhealth`. If Telescope's native FZF extension is missing, install `make` and restart Neovim. If search mappings return no results, confirm that `rg` and `fd` are on your `PATH`.
 
+If Tree-sitter reports an error such as `ENOENT: no such file or directory (cmd): 'tree-sitter'` while installing a parser, the Tree-sitter CLI is missing or is not on your `PATH`. Install the `tree-sitter-cli` package using the instructions above, or install it with npm:
+
+```sh
+npm install --global tree-sitter-cli
+```
+
+Verify that Neovim can find it, then restart Neovim and retry the parser installation:
+
+```sh
+tree-sitter --version
+```
+
+```vim
+:lua require('nvim-treesitter').install('typescript')
+```
+
 For language server problems, open `:Mason`, confirm that the server is installed, and check `:LspInfo` in a buffer of the expected filetype. The configured servers are `lua_ls` and `stylua`; other languages must be added to the `servers` table in `init.lua`.

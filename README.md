@@ -8,29 +8,37 @@ This configuration uses Neovim's built-in `vim.pack` to install plugins. It is a
 
 ## Quick start
 
-You need Neovim 0.12 or newer, Git, and the external tools listed in [`INSTALL.md`](INSTALL.md). If Neovim is already installed, clone the configuration into its config directory:
+Follow these three steps for a normal installation. You need Neovim 0.12 or newer and Git. Search, file discovery, Tree-sitter parsers, native plugin builds, and clipboard support also use the tools listed in [`INSTALL.md`](INSTALL.md).
+
+### 1. Clone the configuration
 
 ```sh
-# Linux and macOS
 git clone https://github.com/adejolx/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
 ```
 
 ```powershell
-# Windows PowerShell
 git clone https://github.com/adejolx/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
 ```
 
-Start Neovim and let it install the plugins:
+If you already have a Neovim configuration, back it up first or use a separate `NVIM_APPNAME`. See [`INSTALL.md`](INSTALL.md) for platform-specific details.
+
+### 2. Start Neovim
 
 ```sh
 nvim
 ```
 
-If you need platform-specific dependencies, an alternate config location, or troubleshooting help, see [`INSTALL.md`](INSTALL.md).
+On the first launch, `vim.pack` downloads and installs the plugins declared in [`init.lua`](init.lua).
 
-## Start writing code
+### 3. Check the setup
 
-Open a project with `nvim .`, then use these mappings in Normal mode. The leader key is `<Space>`.
+Run `:checkhealth` if anything does not start correctly. Use `:Mason` to inspect language servers and tools.
+
+## Everyday workflow
+
+Open a project with `nvim .`. The leader key is `<Space>`.
+
+### Find and move
 
 | Keys | Action |
 | --- | --- |
@@ -38,11 +46,21 @@ Open a project with `nvim .`, then use these mappings in Normal mode. The leader
 | `<Space>sg` | Search project text |
 | `<Space>sh` | Search Neovim help |
 | `<Space><Space>` | Switch between open buffers |
+| `<Space>sk` | Search configured keymaps |
+| `<C-h>`, `<C-j>`, `<C-k>`, `<C-l>` | Move between split windows |
+| `<Space>j` | Jump to a labeled location on screen |
+
+`mini.jump2d` shows labels over likely jump locations. Press `<Space>j`, then type the label or labels shown at the destination. It works in Normal, Visual, and Operator-pending modes.
+
+### Edit and inspect
+
+| Keys | Action |
+| --- | --- |
 | `<Space>f` | Format the current buffer |
 | `<Space>q` | Open the diagnostics list |
-| `<Space>sk` | Search all configured keymaps |
-| `<C-h>`, `<C-j>`, `<C-k>`, `<C-l>` | Move between split windows |
 | `<Esc><Esc>` | Leave terminal mode |
+
+### Work with language servers
 
 When a language server is attached, these mappings are available:
 
@@ -55,26 +73,24 @@ When a language server is attached, these mappings are available:
 | `gra` | Apply a code action |
 | `<Space>th` | Toggle inlay hints |
 
-The default setup installs and enables `lua_ls` and `stylua`. Open `:Mason` to inspect the installed tools or add tools for another language. Add the language server to the `servers` table in [`init.lua`](init.lua), then restart Neovim.
+The default setup installs and enables `lua_ls` and `stylua`. To support another language, add its language server to the `servers` table in [`init.lua`](init.lua), then restart Neovim.
 
-## Optional plugins
+## Customize the setup
 
-Optional examples are stored in [`lua/kickstart/plugins`](lua/kickstart/plugins) and are disabled until you enable them. To add a file explorer, uncomment this line near the end of [`init.lua`](init.lua):
+Optional examples live in [`lua/kickstart/plugins`](lua/kickstart/plugins). The `mini.files` explorer is enabled by default:
 
 ```lua
-require 'kickstart.plugins.neo-tree'
+require 'kickstart.plugins.mini-files'
 ```
 
-Restart Neovim, then press `\` in Normal mode to open Neo-tree. Press `\` again inside the explorer to close it.
+Press `\` or `<Space>e` in Normal mode to toggle the explorer. Press `<Space>E` to reveal the current file. Inside the explorer, `gX` opens the selected file or folder in the OS file explorer, `gy` copies its absolute path, `gY` copies its path relative to the current working directory, `gI` toggles Git-ignored entries, and `g~` changes Neovim’s working directory to the selected folder (or the parent of a selected file). Git-ignored entries are dimmed when visible and hidden when toggled off. Renames and moves notify supported LSP servers so they can update imports.
 
 Other available examples are `autopairs`, `debug`, `indent_line`, and `lint`. Each module contains its own setup and keymaps. For example, enabling `debug` adds `<F5>` to continue, `<F1>` to step into, `<F2>` to step over, `<F3>` to step out, and `<Space>b` to toggle a breakpoint.
 
 For personal plugins, create Lua modules under [`lua/custom/plugins`](lua/custom/plugins), then uncomment `require 'custom.plugins'` near the end of `init.lua`. The loader will load the Lua files in that directory.
 
-## Learn and customize
+Start with `:Tutor` and `:help`. The comments throughout [`init.lua`](init.lua) link each setting to the relevant help topic. Use `:lua vim.pack.update()` to update plugins.
 
-Start with `:Tutor`, `:help`, and `:checkhealth`. To discover the configuration's mappings, use `<Space>sk`; to search Neovim's documentation, use `<Space>sh`.
-
-The comments throughout [`init.lua`](init.lua) link each setting to the relevant help topic. Read the section you want to change, follow its `:help` reference, and then edit the configuration. Use `:lua vim.pack.update()` to update plugins.
+See [`INSTALL.md`](INSTALL.md) for dependency installation, alternate configuration paths, first-launch commands, plugin updates, and troubleshooting.
 
 The project is licensed under the terms in [`LICENSE.md`](LICENSE.md).
