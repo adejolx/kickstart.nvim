@@ -83,7 +83,7 @@ Optional examples live in [`lua/kickstart/plugins`](lua/kickstart/plugins). The 
 require 'kickstart.plugins.mini-files'
 ```
 
-Press `\` or `<Space>e` in Normal mode to toggle the explorer. Press `<Space>E` to reveal the current file. Inside the explorer, `gX` opens the selected file or folder in the OS file explorer, `gy` copies its absolute path, `gY` copies its path relative to the current working directory, `gI` toggles Git-ignored entries, and `g~` changes Neovim’s working directory to the selected folder (or the parent of a selected file). Git-ignored entries are dimmed when visible and hidden when toggled off. Renames and moves notify supported LSP servers so they can update imports.
+Press `\` or `<Space>e` in Normal mode to toggle the explorer. Press `<Space>E` to reveal the current file. Inside the explorer, `l` or `<CR>` opens a file and closes the explorer; `L` opens it while keeping the explorer open. `gX` opens the selected file or folder in the OS file explorer, `gy` copies its absolute path, `gY` copies its path relative to the current working directory, `gI` toggles Git-ignored entries, and `g~` changes Neovim’s working directory to the selected folder (or the parent of a selected file). Git-ignored entries are hidden by default, then dimmed when shown. Telescope’s file finder follows the same setting, and `q` closes a Telescope finder in Normal mode. Renames and moves notify supported LSP servers so they can update imports.
 
 Other available examples are `autopairs`, `debug`, `indent_line`, and `lint`. Each module contains its own setup and keymaps. For example, enabling `debug` adds `<F5>` to continue, `<F1>` to step into, `<F2>` to step over, `<F3>` to step out, and `<Space>b` to toggle a breakpoint.
 

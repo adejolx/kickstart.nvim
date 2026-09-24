@@ -3,7 +3,7 @@
 
 local MiniFiles = require 'mini.files'
 local ignored_by_directory = {}
-local show_git_ignored = true
+vim.g.mini_files_show_git_ignored = false
 
 vim.api.nvim_set_hl(0, 'MiniFilesIgnored', { link = 'Comment' })
 
@@ -46,7 +46,7 @@ local function is_git_ignored(path)
 end
 
 local function git_filter(fs_entry)
-  return show_git_ignored or not is_git_ignored(fs_entry.path)
+  return vim.g.mini_files_show_git_ignored or not is_git_ignored(fs_entry.path)
 end
 
 local function toggle_files(path, use_latest)
@@ -84,6 +84,11 @@ MiniFiles.setup {
       return MiniFiles.default_highlight(fs_entry)
     end,
   },
+  mappings = {
+    -- Open files and close the explorer; use `L` to keep it open.
+    go_in = 'L',
+    go_in_plus = 'l',
+  },
   options = {
     permanent_delete = false,
     use_as_default_explorer = true,
@@ -116,15 +121,16 @@ vim.api.nvim_create_autocmd('User', {
 
     -- Open a file or folder with the consumer's default OS application.
     vim.keymap.set('n', 'gX', open_in_os, { buffer = buf, desc = 'Open with OS' })
+    vim.keymap.set('n', '<CR>', function() MiniFiles.go_in { close_on_file = true } end, { buffer = buf, desc = 'Open and close explorer' })
 
     -- Copy the selected entry to the active register in either path format.
     vim.keymap.set('n', 'gy', function() copy_path(false) end, { buffer = buf, desc = 'Yank absolute path' })
     vim.keymap.set('n', 'gY', function() copy_path(true) end, { buffer = buf, desc = 'Yank relative path' })
 
     vim.keymap.set('n', 'gI', function()
-      show_git_ignored = not show_git_ignored
+      vim.g.mini_files_show_git_ignored = not vim.g.mini_files_show_git_ignored
       MiniFiles.refresh { content = { filter = git_filter } }
-      vim.notify(('Git-ignored files %s'):format(show_git_ignored and 'shown' or 'hidden'))
+      vim.notify(('Git-ignored files %s'):format(vim.g.mini_files_show_git_ignored and 'shown' or 'hidden'))
     end, { buffer = buf, desc = 'Toggle Git-ignored files' })
 
     -- Set the working directory to the selected folder, or its parent for a file.

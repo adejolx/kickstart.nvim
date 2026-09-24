@@ -539,6 +539,33 @@ do
 
   -- See `:help telescope` and `:help telescope.setup()`
   require('telescope').setup {
+    defaults = {
+      -- Keep the directory segments that distinguish similarly named results,
+      -- then trim the beginning only when the displayed path is too long.
+      path_display = { 'smart', 'truncate' },
+      -- Adapt the picker to the available terminal width.
+      layout_strategy = 'flex',
+      layout_config = {
+        horizontal = {
+          height = 0.85,
+          preview_width = 0.55,
+          prompt_position = 'top',
+          width = 0.90,
+        },
+        vertical = {
+          height = 0.90,
+          mirror = true,
+          preview_height = 0.50,
+          width = 0.90,
+        },
+        flex = { flip_columns = 120 },
+      },
+      mappings = {
+        n = {
+          q = require('telescope.actions').close,
+        },
+      },
+    },
     -- You can put your default mappings / updates / etc. in here
     --  All the info you're looking for is in `:help telescope.setup()`
     --
@@ -561,7 +588,15 @@ do
   local builtin = require 'telescope.builtin'
   vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
   vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-  vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+  vim.keymap.set('n', '<leader>sf', function()
+    local show_git_ignored = vim.g.mini_files_show_git_ignored == true
+    if not show_git_ignored then
+      builtin.find_files {}
+      return
+    end
+
+    builtin.find_files { no_ignore = true, hidden = true }
+  end, { desc = '[S]earch [F]iles' })
   vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
   vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
   vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -853,6 +888,7 @@ do
   -- You can press `g?` for help in this menu.
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
+    'markdownlint',
     'oxfmt',
     'oxlint',
     'tailwindcss-language-server',
