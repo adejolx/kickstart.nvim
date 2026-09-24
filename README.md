@@ -54,6 +54,10 @@ Open a project with `nvim .`. The leader key is `<Space>`.
 
 The open-buffer picker on `<Space><Space>` lists buffers by most recently used, so the buffers you opened or visited most recently appear first.
 
+### Complete code with the LSP popup
+
+When the completion popup is open, use `<C-n>` or `<Down>` to select the next suggestion and `<C-p>` or `<Up>` to select the previous one. Press `<C-y>` to accept the selected suggestion, `<C-e>` to close the popup, and `<C-Space>` to open it manually.
+
 ### Edit and inspect
 
 | Keys | Action |
