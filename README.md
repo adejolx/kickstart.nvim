@@ -63,6 +63,9 @@ Open a project with `nvim .`. The leader key is `<Space>`.
 | `<Space>sk` | Search configured keymaps |
 | `<C-h>`, `<C-j>`, `<C-k>`, `<C-l>` | Move between split windows |
 | `<Space>j` | Jump to a labeled location on screen |
+| `<Space>ya` | Copy all buffer lines to the system clipboard |
+| `<Space>da` | Delete all buffer lines |
+| `<C-d>`, `<C-u>` | Scroll and recenter the cursor |
 
 `mini.jump2d` shows labels over likely jump locations. Press `<Space>j`, then
 type the label or labels shown at the destination. It works in Normal, Visual,

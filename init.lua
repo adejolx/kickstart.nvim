@@ -187,6 +187,13 @@ do
   -- Escape insert mode with `jk`
   vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
 
+  vim.keymap.set('n', '<leader>ya', function()
+    vim.fn.setreg('+', vim.api.nvim_buf_get_lines(0, 0, -1, true), 'V')
+  end, { desc = 'Yank all buffer lines to the system clipboard' })
+  vim.keymap.set('n', '<leader>da', '<cmd>silent keepjumps %delete _<CR>', { desc = 'Delete all buffer lines' })
+  vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll down and recenter' })
+  vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll up and recenter' })
+
   -- Diagnostic Config & Keymaps
   --  See `:help vim.diagnostic.Opts`
   vim.diagnostic.config {
