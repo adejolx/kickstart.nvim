@@ -187,6 +187,13 @@ do
   -- Escape insert mode with `jk`
   vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
 
+  vim.api.nvim_create_user_command('Plugins', function() vim.print(vim.pack.get()) end, { desc = 'List installed vim.pack plugins', force = true })
+  vim.api.nvim_create_user_command('Reload', function()
+    local config = vim.env.MYVIMRC or (vim.fn.stdpath 'config' .. '/init.lua')
+    vim.cmd.source(vim.fn.fnameescape(config))
+    vim.notify('Neovim config reloaded', vim.log.levels.INFO)
+  end, { desc = 'Reload the Neovim configuration', force = true })
+
   vim.keymap.set('n', '<leader>ya', function()
     vim.fn.setreg('+', vim.api.nvim_buf_get_lines(0, 0, -1, true), 'V')
   end, { desc = 'Yank all buffer lines to the system clipboard' })

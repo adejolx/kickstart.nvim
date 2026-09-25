@@ -48,6 +48,9 @@ On the first launch, `vim.pack` downloads and installs the plugins declared in
 Run `:checkhealth` if anything does not start correctly. Use `:Mason` to inspect
 language servers and tools.
 
+Use `:Plugins` to list the plugins installed through `vim.pack`, and `:Reload`
+to reload the configuration from the current Neovim session.
+
 ## Everyday workflow
 
 Open a project with `nvim .`. The leader key is `<Space>`.
