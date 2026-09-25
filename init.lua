@@ -212,7 +212,7 @@ do
   }
 
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-  vim.keymap.set('n', '<leader>d', function()
+  vim.keymap.set('n', '<leader>e', function()
     vim.diagnostic.open_float { scope = 'line' }
   end, { desc = 'Show line diagnostics' })
 
@@ -565,7 +565,7 @@ do
         horizontal = {
           height = 0.85,
           preview_width = 0.55,
-          prompt_position = 'top',
+          prompt_position = 'bottom',
           width = 0.90,
         },
         vertical = {

@@ -121,10 +121,9 @@ vim.api.nvim_create_autocmd('User', {
   callback = function() ignored_by_directory = {} end,
 })
 
--- Open at the current file by default; use `\` for a plain toggle.
-vim.keymap.set('n', '\\', function() toggle_files() end, { desc = 'Toggle file explorer', silent = true })
-vim.keymap.set('n', '<leader>e', function() toggle_files(vim.api.nvim_buf_get_name(0), false) end, { desc = 'Reveal current file' })
-vim.keymap.set('n', '<leader>E', function() toggle_files() end, { desc = 'Toggle file explorer' })
+-- Open at the current file by default; use `\` as a quick toggle.
+vim.keymap.set('n', '\\', function() toggle_files(vim.api.nvim_buf_get_name(0), false) end, { desc = 'Reveal current file', silent = true })
+vim.keymap.set('n', '<leader>\\', function() toggle_files() end, { desc = 'Toggle file explorer' })
 
 vim.api.nvim_create_autocmd('User', {
   pattern = 'MiniFilesBufferCreate',

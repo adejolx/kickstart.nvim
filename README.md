@@ -65,8 +65,10 @@ When the completion popup is open, use `<C-n>` or `<Down>` to select the next su
 | Keys | Action |
 | --- | --- |
 | `<Space>f` | Format the current buffer |
-| `<Space>d` | Show diagnostics on the current line |
+| `<Space>e` | Show diagnostics on the current line |
 | `<Space>q` | Open the diagnostics list |
+| `\` | Reveal the current file in MiniFiles |
+| `<Space>\` | Toggle the MiniFiles explorer |
 | `<Esc><Esc>` | Leave terminal mode |
 
 ### Work with language servers
