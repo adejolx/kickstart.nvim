@@ -470,20 +470,6 @@ do
     MiniIcons.mock_nvim_web_devicons()
   end
 
-  -- Show only buffers that are currently displayed in a window.
-  local function refresh_tabline_buffers()
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_is_valid(buf) then vim.b[buf].minitabline_disable = #vim.fn.win_findbuf(buf) == 0 end
-    end
-  end
-
-  require('mini.tabline').setup()
-  vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufHidden', 'WinEnter', 'WinClosed' }, {
-    desc = 'Keep hidden buffers out of the tabline',
-    callback = function() vim.schedule(refresh_tabline_buffers) end,
-  })
-  refresh_tabline_buffers()
-
   -- Better Around/Inside textobjects
   --
   -- Examples:
@@ -498,10 +484,6 @@ do
     },
     n_lines = 500,
   }
-
-  -- Jump to visible locations with short, on-screen labels.
-  require('mini.jump2d').setup()
-  vim.keymap.set({ 'n', 'x', 'o' }, '<leader>j', MiniJump2d.start, { desc = 'Jump to a location' })
 
   -- Add/delete/replace surroundings (brackets, quotes, etc.)
   --
@@ -1175,12 +1157,10 @@ do
   require 'kickstart.plugins.indent_line'
   require 'kickstart.plugins.lint'
   require 'kickstart.plugins.autopairs'
-  require 'kickstart.plugins.mini-files'
 
   -- NOTE: You can add your own plugins, configuration, etc. in `lua/custom/plugins/*.lua`.
   --
-  -- For independent modules, uncomment the convenience loader:
-  -- require 'custom.plugins'
+  require 'custom.plugins'
   --
   -- `custom.plugins` automatically loads files from that directory, but their
   -- order is unspecified. If plugins depend on each other, keep them in the same

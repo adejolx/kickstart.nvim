@@ -123,11 +123,11 @@ language, add its language server to the `servers` table in
 
 ## Customize the setup
 
-Optional examples live in [`lua/kickstart/plugins`](lua/kickstart/plugins). The
+Personal plugin modules live in [`lua/custom/plugins`](lua/custom/plugins). The
 `mini.files` explorer is enabled by default:
 
 ```lua
-require 'kickstart.plugins.mini-files'
+require 'custom.plugins'
 ```
 
 Press `\` in Normal mode to reveal the current file, or `<Space>\` to toggle the
@@ -146,10 +146,9 @@ Each module contains its own setup and keymaps. For example, enabling `debug`
 adds `<F5>` to continue, `<F1>` to step into, `<F2>` to step over, `<F3>` to
 step out, and `<Space>b` to toggle a breakpoint.
 
-For personal plugins, create Lua modules under
-[`lua/custom/plugins`](lua/custom/plugins), then uncomment the
-`require 'custom.plugins'` line near the end of `init.lua`. The loader will load
-the Lua files in that directory.
+The recent `mini.nvim` customizations and `nvim-ts-autotag` plugin are loaded
+from this directory automatically. The loader discovers each Lua module there;
+their order is unspecified, so dependent plugins should share one module.
 
 Start with `:Tutor` and `:help`. The comments throughout [`init.lua`](init.lua)
 link each setting to the relevant help topic. Use `:lua vim.pack.update()` to
