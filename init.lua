@@ -465,6 +465,20 @@ do
   --  A collection of various small independent plugins/modules
   vim.pack.add { gh 'nvim-mini/mini.nvim' }
 
+  -- Show the current LSP symbol path in the window bar.
+  vim.pack.add { gh 'SmiteshP/nvim-navic' }
+  require('nvim-navic').setup {
+    icons = {
+      enabled = vim.g.have_nerd_font,
+    },
+    separator = ' > ',
+    highlight = vim.g.have_nerd_font,
+    lsp = {
+      auto_attach = true,
+    },
+  }
+  vim.opt.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+
   -- If a nerd font is available, load the icons module for pretty icons in various plugins.
   if vim.g.have_nerd_font then
     require('mini.icons').setup()
