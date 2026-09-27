@@ -473,9 +473,9 @@ do
   }
 
   -- [[ Colorscheme ]]
-  vim.pack.add { gh 'aadielpr/bono.nvim' }
-  require('bono').setup { variant = 'cream' }
-  vim.cmd.colorscheme 'bono'
+  vim.pack.add { gh 'projekt0n/github-nvim-theme' }
+  require('github-theme').setup {}
+  vim.cmd.colorscheme 'github_light_colorblind'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
