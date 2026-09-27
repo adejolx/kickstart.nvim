@@ -68,6 +68,8 @@ Open a project with `nvim .`. The leader key is `<Space>`.
 | `<Space>j` | Jump to a labeled location on screen |
 | `<Space>ya` | Copy all buffer lines to the system clipboard |
 | `<Space>da` | Delete all buffer lines |
+| `<Space>ra` | Replace all buffer lines with the system clipboard |
+| `<Space>lg` | Open LazyGit |
 | `<C-d>`, `<C-u>` | Scroll and recenter the cursor |
 
 `mini.jump2d` shows labels over likely jump locations. Press `<Space>j`, then

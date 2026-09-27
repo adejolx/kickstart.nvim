@@ -200,6 +200,40 @@ do
     vim.fn.setreg('+', vim.api.nvim_buf_get_lines(0, 0, -1, true), 'V')
   end, { desc = 'Yank all buffer lines to the system clipboard' })
   vim.keymap.set('n', '<leader>da', '<cmd>silent keepjumps %delete _<CR>', { desc = 'Delete all buffer lines' })
+  vim.keymap.set('n', '<leader>ra', function()
+    local lines = vim.fn.getreg('+', 1, true)
+    vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
+  end, { desc = 'Replace all buffer lines with system clipboard' })
+  vim.keymap.set('n', '<leader>lg', function()
+    local buf = vim.api.nvim_create_buf(false, true)
+    local width = math.floor(vim.o.columns * 0.9)
+    local height = math.floor(vim.o.lines * 0.9)
+    local win = vim.api.nvim_open_win(buf, true, {
+      relative = 'editor',
+      row = math.floor((vim.o.lines - height) / 2),
+      col = math.floor((vim.o.columns - width) / 2),
+      width = width,
+      height = height,
+      style = 'minimal',
+      border = 'rounded',
+      title = ' LazyGit ',
+      title_pos = 'center',
+    })
+
+    vim.bo[buf].bufhidden = 'wipe'
+    vim.fn.termopen('lazygit', {
+      cwd = vim.fn.getcwd(),
+      on_exit = function()
+        vim.schedule(function()
+          if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
+        end)
+      end,
+    })
+    vim.keymap.set('t', '<Esc><Esc>', function()
+      if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
+    end, { buffer = buf, desc = 'Close LazyGit' })
+    vim.cmd 'startinsert'
+  end, { desc = 'Open LazyGit' })
   vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll down and recenter' })
   vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll up and recenter' })
 
