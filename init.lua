@@ -568,6 +568,9 @@ do
   -- See `:help telescope` and `:help telescope.setup()`
   require('telescope').setup {
     defaults = {
+      -- Use the row highlight as the selection indicator instead of a caret.
+      selection_caret = '  ',
+      hl_result_eol = true,
       -- Keep the directory segments that distinguish similarly named results,
       -- then trim the beginning only when the displayed path is too long.
       path_display = { 'smart', 'truncate' },
@@ -607,6 +610,9 @@ do
       ['ui-select'] = { require('telescope.themes').get_dropdown() },
     },
   }
+
+  -- Make the selected result visible across the whole row.
+  vim.api.nvim_set_hl(0, 'TelescopeSelection', { link = 'CursorLine' })
 
   -- Enable Telescope extensions if they are installed
   pcall(require('telescope').load_extension, 'fzf')
