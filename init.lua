@@ -196,9 +196,12 @@ do
     vim.notify('Neovim config reloaded', vim.log.levels.INFO)
   end, { desc = 'Reload the Neovim configuration', force = true })
 
-  vim.keymap.set('n', '<leader>ya', function()
-    vim.fn.setreg('+', vim.api.nvim_buf_get_lines(0, 0, -1, true), 'V')
-  end, { desc = 'Yank all buffer lines to the system clipboard' })
+  vim.keymap.set(
+    'n',
+    '<leader>ya',
+    function() vim.fn.setreg('+', vim.api.nvim_buf_get_lines(0, 0, -1, true), 'V') end,
+    { desc = 'Yank all buffer lines to the system clipboard' }
+  )
   vim.keymap.set('n', '<leader>da', '<cmd>silent keepjumps %delete _<CR>', { desc = 'Delete all buffer lines' })
   vim.keymap.set('n', '<leader>ra', function()
     local lines = vim.fn.getreg('+', 1, true)
@@ -262,9 +265,7 @@ do
   }
 
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-  vim.keymap.set('n', '<leader>e', function()
-    vim.diagnostic.open_float { scope = 'line' }
-  end, { desc = 'Show line diagnostics' })
+  vim.keymap.set('n', '<leader>e', function() vim.diagnostic.open_float { scope = 'line' } end, { desc = 'Show line diagnostics' })
 
   -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
   -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -667,9 +668,7 @@ do
   vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
   vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
   vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
-  vim.keymap.set('n', '<leader><leader>', function()
-    builtin.buffers { sort_mru = true }
-  end, { desc = '[ ] Find existing buffers' })
+  vim.keymap.set('n', '<leader><leader>', function() builtin.buffers { sort_mru = true } end, { desc = '[ ] Find existing buffers' })
 
   -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
   -- If you later switch picker plugins, this is where to update these mappings.
@@ -876,12 +875,12 @@ do
           },
           experimental = {
             classRegex = {
-              { 'cn\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
-              { 'clsx\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
-              { 'cva\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
-              { 'classNames?\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
-              { 'twMerge\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
-              { 'tv\\(([^)]*)\\)', "[\"`']([^\"`']*)[\"`']" },
+              { 'cn\\(([^)]*)\\)', '["`\']([^"`\']*)["`\']' },
+              { 'clsx\\(([^)]*)\\)', '["`\']([^"`\']*)["`\']' },
+              { 'cva\\(([^)]*)\\)', '["`\']([^"`\']*)["`\']' },
+              { 'classNames?\\(([^)]*)\\)', '["`\']([^"`\']*)["`\']' },
+              { 'twMerge\\(([^)]*)\\)', '["`\']([^"`\']*)["`\']' },
+              { 'tv\\(([^)]*)\\)', '["`\']([^"`\']*)["`\']' },
             },
           },
         },
