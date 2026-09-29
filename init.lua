@@ -474,18 +474,9 @@ do
   }
 
   -- [[ Colorscheme ]]
-  vim.pack.add({
-    { src = "https://github.com/mcauley-penney/techbase.nvim" },
-  })
-
-  -- optional: configure before loading the colorscheme
-  require("techbase").setup({
-    italic_comments = false,
-    transparent = false,
-    hl_overrides = {},
-  })
-
-  vim.cmd.colorscheme("techbase")
+  vim.pack.add { gh 'projekt0n/github-nvim-theme' }
+  require('github-theme').setup {}
+  vim.cmd.colorscheme 'github_light_colorblind'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
