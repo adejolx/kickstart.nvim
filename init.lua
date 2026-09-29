@@ -597,17 +597,21 @@ do
       path_display = { 'smart', 'truncate' },
       -- Adapt the picker to the available terminal width.
       layout_strategy = 'flex',
+      -- Put the strongest matches at the top of the result list.
+      sorting_strategy = 'ascending',
       layout_config = {
         horizontal = {
           height = 0.85,
-          preview_width = 0.55,
-          prompt_position = 'bottom',
+          mirror = false,
+          preview_width = 0.42,
+          prompt_position = 'top',
           width = 0.90,
         },
         vertical = {
           height = 0.90,
-          mirror = true,
-          preview_height = 0.50,
+          mirror = false,
+          preview_height = 0.35,
+          prompt_position = 'top',
           width = 0.90,
         },
         flex = { flip_columns = 120 },
