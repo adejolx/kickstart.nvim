@@ -474,9 +474,8 @@ do
   }
 
   -- [[ Colorscheme ]]
-  vim.pack.add { gh 'projekt0n/github-nvim-theme' }
-  require('github-theme').setup {}
-  vim.cmd.colorscheme 'github_light_colorblind'
+  vim.pack.add { gh 'vihu/azulejobrutalism.nvim' }
+  vim.cmd.colorscheme 'azulejo-brutalism'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
