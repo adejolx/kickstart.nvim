@@ -280,6 +280,8 @@ do
   -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
   vim.keymap.set('n', '<Up>', 'gk', { desc = 'Move up by display line' })
   vim.keymap.set('n', '<Down>', 'gj', { desc = 'Move down by display line' })
+  vim.keymap.set('n', 'k', 'gk', { desc = 'Move up by display line' })
+  vim.keymap.set('n', 'j', 'gj', { desc = 'Move down by display line' })
 
   -- Keybinds to make split navigation easier.
   --  Use CTRL+<hjkl> to switch between windows
@@ -505,6 +507,15 @@ do
     -- Used for backwards compatibility with plugins that require `nvim-web-devicons` (e.g. telescope.nvim)
     MiniIcons.mock_nvim_web_devicons()
   end
+
+  -- Show open buffers in a navigable tabline.
+  vim.pack.add { gh 'akinsho/bufferline.nvim' }
+  require('bufferline').setup {
+    options = {
+      mode = 'tabs',
+      diagnostics = 'nvim_lsp',
+    },
+  }
 
   -- Better Around/Inside textobjects
   --

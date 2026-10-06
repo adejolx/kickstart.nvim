@@ -79,9 +79,8 @@ and Operator-pending modes.
 The open-buffer picker on `<Space><Space>` lists currently displayed buffers by
 most recently used, so the buffers you visited most recently appear first.
 
-`mini.tabline` shows those currently displayed buffers across the top of the
-editor. Buffers hidden after closing their window or tab page are removed from
-the tabline automatically.
+`bufferline.nvim` shows Neovim tab pages across the top of the editor, with LSP
+diagnostics displayed when available.
 
 ### Complete code with the LSP popup
 
