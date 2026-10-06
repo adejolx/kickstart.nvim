@@ -98,9 +98,10 @@ MiniFiles.setup {
     end,
   },
   mappings = {
-    -- Open files and close the explorer; use `L` to keep it open.
-    go_in = 'L',
-    go_in_plus = 'l',
+    -- Keep `h` and `l` available for moving through names while editing.
+    go_out = '[',
+    go_in = ']',
+    go_in_plus = '<CR>',
   },
   options = {
     permanent_delete = false,
