@@ -203,6 +203,7 @@ do
     { desc = 'Yank all buffer lines to the system clipboard' }
   )
   vim.keymap.set('n', '<leader>da', '<cmd>silent keepjumps %delete _<CR>', { desc = 'Delete all buffer lines' })
+  vim.keymap.set('n', '<leader>sa', 'ggVG', { desc = 'Select all buffer lines' })
   vim.keymap.set('n', '<leader>ra', function()
     local lines = vim.fn.getreg('+', 1, true)
     vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
