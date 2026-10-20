@@ -36,6 +36,11 @@ If you already have a Neovim configuration, back it up first or use a separate
 
 ### 2. Start Neovim
 
+On Debian/Ubuntu, install `python3-venv` first (for example,
+`sudo apt install python3-venv`). Mason uses it to create the virtual
+environment needed to install Black. See [`INSTALL.md`](INSTALL.md) for other
+platform dependencies.
+
 ```sh
 nvim
 ```
@@ -70,7 +75,7 @@ Open a project with `nvim .`. The leader key is `<Space>`.
 | `<Space>da` | Delete all buffer lines |
 | `<Space>sa` | Select all buffer lines |
 | `<Space>ra` | Replace all buffer lines with the system clipboard |
-| `<Space>lg` | Open LazyGit |
+| `<Space>lg` | Open LazyGit (requires `lazygit` installed) |
 | `<C-d>`, `<C-u>` | Scroll and recenter the cursor |
 
 `mini.jump2d` shows labels over likely jump locations. Press `<Space>j`, then

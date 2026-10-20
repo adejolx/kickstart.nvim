@@ -20,11 +20,15 @@ Install the following before starting Neovim:
 - [`fd`](https://github.com/sharkdp/fd) is optional; Telescope can use it as
   an alternative file finder
 - [Tree-sitter CLI](https://tree-sitter.github.io/tree-sitter/cli/)
+- `lazygit` is optional; it is required for the `<Space>lg` mapping
 - A clipboard provider such as `xclip`, `xsel`, or `win32yank`
 
 Language-specific features need their own tools. Install the runtime or compiler
 for the languages you use, such as `go` for Go or `npm` for TypeScript. Mason
-can install many language servers and formatters after Neovim starts.
+can install many language servers and formatters after Neovim starts. This
+configuration installs Black through Mason; Mason needs Python's virtual
+environment support to install it. On Debian/Ubuntu, install `python3-venv`
+(or the versioned package such as `python3.12-venv` for your Python version).
 
 A [Nerd Font](https://www.nerdfonts.com/) is optional. If you install and select
 one in your terminal, set `vim.g.have_nerd_font = true` in `init.lua` to enable
@@ -59,7 +63,7 @@ For Ubuntu or Debian-based systems, the common dependencies are:
 
 ```sh
 sudo apt update
-sudo apt install git make gcc ripgrep tree-sitter-cli unzip xclip neovim
+sudo apt install git make gcc ripgrep tree-sitter-cli unzip xclip neovim python3-venv
 ```
 
 For Fedora:
@@ -77,14 +81,24 @@ sudo pacman -S --needed git make gcc ripgrep tree-sitter-cli unzip neovim
 On macOS, [Homebrew](https://brew.sh/) provides the usual packages:
 
 ```sh
-brew install neovim git make ripgrep tree-sitter
+brew install neovim git make ripgrep tree-sitter-cli
 ```
 
 On Windows, install Neovim and Git with
 [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/),
-then install the remaining command-line tools through your preferred package
-manager. `make` and a C compiler are needed to build optional native plugins
-such as Telescope's FZF extension.
+then install the remaining command-line tools, including `tree-sitter-cli`,
+through your preferred package manager. `make` and a C compiler are needed to
+build optional native plugins such as Telescope's FZF extension.
+
+Homebrew is only one installation option. If your distribution does not package
+`tree-sitter-cli`, install a prebuilt binary from the
+[Tree-sitter CLI releases](https://github.com/tree-sitter/tree-sitter/releases),
+or install it with Rust using `cargo install --locked tree-sitter-cli`.
+
+To enable the optional LazyGit mapping, install `lazygit` with your package
+manager. Common package names are `lazygit` (for example, `brew install lazygit`
+on macOS or Linux, `sudo dnf install lazygit` on Fedora, and
+`sudo pacman -S lazygit` on Arch). Package availability can vary by distribution.
 
 ## First launch and plugin updates
 
@@ -115,18 +129,24 @@ Neovim. If search mappings return no results, confirm that `rg` is on your
 If Tree-sitter reports an error such as
 `ENOENT: no such file or directory (cmd): 'tree-sitter'` while installing a
 parser, the Tree-sitter CLI is missing or is not on your `PATH`. Install the
-`tree-sitter-cli` package using the instructions above, or install it with npm:
-
-```sh
-npm install --global tree-sitter-cli
-```
-
-Verify that Neovim can find it, then restart Neovim and retry the parser
-installation:
+`tree-sitter-cli` package using your OS package manager. With Homebrew, the CLI
+formula is `tree-sitter-cli`; `tree-sitter` installs the runtime library, not
+the CLI. If your package manager does not provide the CLI, use a prebuilt
+binary from the [Tree-sitter CLI releases](https://github.com/tree-sitter/tree-sitter/releases)
+or install it with Rust using `cargo install --locked tree-sitter-cli`. Verify
+that the executable works before restarting Neovim:
 
 ```sh
 tree-sitter --version
 ```
+
+If you installed the CLI through npm and this command fails with a Node
+`spawn .../tree-sitter ENOENT` error, the npm launcher is present but its native
+executable is missing. Remove that npm package and use one of the installation
+options above instead.
+
+After `tree-sitter --version` succeeds, restart Neovim and retry the parser
+installation:
 
 ```vim
 :lua require('nvim-treesitter').install('typescript')
